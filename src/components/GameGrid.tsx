@@ -71,11 +71,11 @@ const GameGrid = () => {
   });
 
   return (
-    <section className="bg-gray-900 py-20">
+    <section className="bg-slate-900 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-white mb-4">Featured Games</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             Discover the most popular blockchain games and start earning while playing
           </p>
         </div>
@@ -84,13 +84,13 @@ const GameGrid = () => {
         <div className="flex flex-col lg:flex-row gap-6 mb-12">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
               <input
                 type="text"
                 placeholder="Search games..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-gray-800 text-white rounded-xl pl-12 pr-4 py-3 border border-gray-700 focus:border-purple-500 focus:outline-none"
+                className="w-full bg-slate-800 text-white rounded-xl pl-12 pr-4 py-3 border border-slate-700 focus:border-emerald-500 focus:outline-none"
               />
             </div>
           </div>
@@ -102,8 +102,8 @@ const GameGrid = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-3 rounded-xl font-medium transition-all ${
                   selectedCategory === category
-                    ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'
                 }`}
               >
                 {category}
@@ -121,12 +121,12 @@ const GameGrid = () => {
 
         {filteredGames.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-gray-400 text-lg">No games found matching your criteria</div>
+            <div className="text-slate-400 text-lg">No games found matching your criteria</div>
           </div>
         )}
 
         <div className="text-center mt-12">
-          <button className="bg-gray-800 text-white px-8 py-3 rounded-xl hover:bg-gray-700 transition-all border border-gray-700">
+          <button className="bg-slate-800 text-white px-8 py-3 rounded-xl hover:bg-slate-700 transition-all border border-slate-700 hover:border-emerald-500/50">
             Load More Games
           </button>
         </div>
