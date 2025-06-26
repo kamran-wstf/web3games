@@ -1,5 +1,6 @@
 import React from 'react';
 import { Play, Users, Trophy, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface GameCardProps {
   title: string;
@@ -8,6 +9,7 @@ interface GameCardProps {
   rating: number;
   earnings: string;
   image: string;
+  link: string;
   isNew?: boolean;
   isTrending?: boolean;
 }
@@ -19,16 +21,19 @@ const GameCard: React.FC<GameCardProps> = ({
   rating,
   earnings,
   image,
+  link,
   isNew,
   isTrending
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-slate-800/60 rounded-2xl overflow-hidden hover:bg-slate-800/80 transition-all duration-300 group hover:scale-105 border border-slate-700/50 hover:border-emerald-500/30">
       <div className="relative">
         <div className="aspect-video bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center border-b border-slate-700">
           <div className="text-6xl opacity-30">🎮</div>
         </div>
-        
+
         {/* Badges */}
         <div className="absolute top-3 left-3 flex space-x-2">
           {isNew && (
@@ -74,7 +79,10 @@ const GameCard: React.FC<GameCardProps> = ({
           </div>
         </div>
 
-        <button className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900 py-3 rounded-xl font-semibold hover:from-emerald-400 hover:to-cyan-400 transition-all">
+        <button
+          className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900 py-3 rounded-xl font-semibold hover:from-emerald-400 hover:to-cyan-400 transition-all"
+          onClick={() => navigate(link)}
+        >
           Play Now
         </button>
       </div>

@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --monad-gradient: linear-gradient(135deg, #6C3BEE 0%, #9D70FF 100%);
+  --monad-purple: #6C3BEE;
+  --monad-light-purple: #9D70FF;
+  --monad-dark: #0F0B1E;
+}
+
+body {
+  @apply bg-[#0F0B1E] text-white;
+}
+
+.blinking-cursor {
+  border-right: 2px solid #fff;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #fff;
+  }
+}
+
+.gradient-text {
+  background: var(--monad-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-border {
+  position: relative;
+  background: var(--monad-dark);
+  border-radius: 1rem;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--monad-gradient);
+  border-radius: 1rem;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.typing-text {
+  @apply text-gray-300 font-medium;
+}
+
+.typing-text span.correct {
+  @apply text-[#9D70FF];
+}
+
+.typing-text span.incorrect {
+  @apply text-red-500;
+}
+
+.typing-text span.current {
+  @apply bg-[#1A1432] rounded;
+}
+
+.mascot {
+  background-image: url('https://www.monad.xyz/mascot.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes dots {
+  0%, 20% {
+    content: ".";
+  }
+  40% {
+    content: "..";
+  }
+  60%, 100% {
+    content: "...";
+  }
+}
+
+@keyframes loading-dot {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.loading-dots::after {
+  content: "";
+  animation: dots 1.5s infinite;
+}
+
+.feature-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #1a1625 0%, #2d1b3d 100%);
+}
+
+.dot {
+  @apply w-2 h-2 rounded-full bg-violet-400;
+  animation: loading-dot 1s infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}

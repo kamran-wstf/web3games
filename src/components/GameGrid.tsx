@@ -10,6 +10,7 @@ const games = [
     rating: 4.8,
     earnings: "$50-200/day",
     image: "/api/placeholder/400/225",
+    link:'/monkey',
     isNew: true,
     isTrending: true
   },
@@ -18,6 +19,7 @@ const games = [
     category: "RPG",
     players: 32100,
     rating: 4.6,
+    link: '/monkey',
     earnings: "$30-150/day",
     image: "/api/placeholder/400/225",
     isTrending: true
@@ -26,6 +28,7 @@ const games = [
     title: "Block Farm",
     category: "Simulation",
     players: 8750,
+    link: '/monkey',
     rating: 4.4,
     earnings: "$20-80/day",
     image: "/api/placeholder/400/225",
@@ -34,6 +37,7 @@ const games = [
   {
     title: "Chaincraft",
     category: "Strategy",
+    link: '/monkey',
     players: 21300,
     rating: 4.7,
     earnings: "$40-120/day",
@@ -42,6 +46,7 @@ const games = [
   {
     title: "Token Battles",
     category: "Action",
+    link: '/monkey',
     players: 18900,
     rating: 4.5,
     earnings: "$35-100/day",
@@ -51,6 +56,7 @@ const games = [
   {
     title: "Metaverse Tycoon",
     category: "Business",
+    link: '/monkey',
     players: 12400,
     rating: 4.3,
     earnings: "$25-90/day",
