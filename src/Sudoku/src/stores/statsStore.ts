@@ -54,16 +54,16 @@ export const useStatsStore = create<StatsState>()(
         set(state => {
           const currentStats = state.stats[difficulty];
           const newCompleted = currentStats.completed + 1;
-          
+
           // Calculate new average time
           const currentTotalTime = (currentStats.averageTime || 0) * currentStats.completed;
           const newAverageTime = (currentTotalTime + time) / newCompleted;
-          
+
           // Update best time if it's better than the current one or if it's the first completion
           const newBestTime = currentStats.bestTime === null || time < currentStats.bestTime
             ? time
             : currentStats.bestTime;
-          
+
           return {
             stats: {
               ...state.stats,

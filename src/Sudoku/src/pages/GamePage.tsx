@@ -44,6 +44,7 @@ const GamePage: React.FC = () => {
   // Check for game completion
   useEffect(() => {
     if (status === 'completed' && !showWinModal) {
+      console.log
       // Play completion sound
       playSound('complete');
       

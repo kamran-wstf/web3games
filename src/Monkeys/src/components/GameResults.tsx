@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Trophy, Target, Clock, Coins, Keyboard, Banknote, Wallet } from 'lucide-react';
 import useGameStore from '../store/gameStore';
-import { endGame, getBalance, getSession } from '../contract/contract';
+import { endGame } from '../contract/contract';
 import dynamic from 'next/dynamic';
 
 const Confetti = dynamic(() => import('react-confetti'), { ssr: false });
@@ -22,7 +22,7 @@ interface GameResultsProps {
 }
 
 const GameResults: React.FC<GameResultsProps> = ({ onClaim }) => {
-  const { walletAddress, chatId, wpm, accuracy, correctChar, earned, setGameStarting, setMyScore, setEarned, setGameActive, setTimeLeft, MyScore, setBalance } = useGameStore();
+  const { walletAddress, chatId, wpm, accuracy, correctChar, earned, setGameStarting, setEarned, setGameActive, setTimeLeft, MyScore, setBalance } = useGameStore();
   const [activeGame, setActive] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(false);
   const [showParty, setShowParty] = useState(false);
@@ -43,7 +43,7 @@ const GameResults: React.FC<GameResultsProps> = ({ onClaim }) => {
     }
 
     try {
-      await endGame(chatId, MyScore, earned);
+      await endGame(walletAddress, earned);
       setActive(false);
     } catch (error) {
       console.error('Error ending game: ', error);
@@ -57,13 +57,10 @@ const GameResults: React.FC<GameResultsProps> = ({ onClaim }) => {
     }
 
     try {
-      const balanceString = await getBalance(chatId);
       setTimeLeft(30);
       setGameStarting(false);
       setGameActive(false);
 
-      const parsedBalance = parseFloat(balanceString);
-      setBalance(parsedBalance);
     } catch (error) {
       console.error('Error resetting game: ', error);
     }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { Trophy } from 'lucide-react';
+import { rewardUser } from '../utils/sudokuGenerator';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 interface Notification {
   id: number;
@@ -10,15 +12,23 @@ interface Notification {
 const GameNotification: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { status } = useGameStore();
+  const {publicKey} = useWallet()
 
   useEffect(() => {
     if (status === 'completed') {
-      // Add a delay to show notification after WinModal
-      const timer = setTimeout(() => {
-        addNotification('Congratulations! You completed the puzzle!');
-      }, 1000); // 1 second delay
-
-      return () => clearTimeout(timer);
+      const handleReward = async () => {
+        try {
+          if (publicKey) {
+            await rewardUser(publicKey.toBase58(),5);
+            addNotification('Congratulations! You completed the puzzle!');
+          } else {
+            addNotification('Wallet not connected. Cannot reward.');
+          }
+        } catch (err) {
+          addNotification('Reward failed. Please try again.');
+        }
+      };
+      handleReward();
     }
   }, [status]);
 
@@ -47,4 +57,4 @@ const GameNotification: React.FC = () => {
   );
 };
 
-export default GameNotification; 
+export default GameNotification;

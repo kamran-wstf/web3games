@@ -15,25 +15,26 @@ const games = [
     isTrending: true
   },
   {
+    title: "Flappy",
+    category: "Run",
+    players: 8750,
+    link: '/flappy',
+    rating: 4.4,
+    earnings: "$20-80/day",
+    image: "https://res.cloudinary.com/dovram6cb/image/upload/v1750949165/Screenshot_2025-06-22_140050_fh9aca.png",
+    isNew: true
+  },
+  {
     title: "MOkeys",
     category: "Typing Game",
     players: 32100,
     rating: 4.6,
     link: '/monkey',
     earnings: "$30-150/day",
-    image: "/api/placeholder/400/225",
+    image: "https://res.cloudinary.com/dovram6cb/image/upload/v1750949174/Screenshot_2025-03-05_155651_lfinec.png",
     isTrending: true
   },
-  {
-    title: "Block Farm",
-    category: "Simulation",
-    players: 8750,
-    link: '/monkey',
-    rating: 4.4,
-    earnings: "$20-80/day",
-    image: "/api/placeholder/400/225",
-    isNew: true
-  },
+
   {
     title: "Chaincraft",
     category: "Strategy",
@@ -123,9 +124,9 @@ const GameGrid = () => {
             <GameCard
               key={index}
               {...game}
-              image={index === 0 ? game.image : ""}
-              comingSoon={index !== 0}
-              link={index === 0 ? game.link : "#"}
+              image={index < 3 ? game.image : ""}
+              comingSoon={index > 2}
+              link={index < 3 ? game.link : "#"}
             />
           ))}
         </div>

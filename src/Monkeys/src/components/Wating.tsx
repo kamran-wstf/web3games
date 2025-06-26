@@ -10,13 +10,7 @@ interface WaitingPageProps {
 }
 
 export function WaitingPage({ }: WaitingPageProps) {
-    const {
-        isGameActive,
-        isGameStarting,
-        walletAddress,
-        MyScore,
-        balance,
-    } = useGameStore();
+
     const [reloadLeaderboard, setReloadLeaderboard] = useState(false);
 
     const messages = [
@@ -64,14 +58,6 @@ export function WaitingPage({ }: WaitingPageProps) {
         return (
             <div className="flex flex-col md:flex-row gap-6 items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <GameResults onClaim={() => setReloadLeaderboard(true)} />
-                <Leaderboard
-                    walletAddress={walletAddress}
-                    balance={balance}
-                    isGameActive={isGameActive}
-                    isGameStarting={isGameStarting}
-                    MyScore={MyScore}
-                    onReloadComplete={() => setReloadLeaderboard(false)}
-                />
             </div>
         );
 

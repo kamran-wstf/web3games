@@ -1,5 +1,6 @@
 import { Difficulty } from '../stores/settingsStore';
 import { transferSol } from './transferSol';
+// import { transferSol } from './transferSol';
 
 // Create a new sudoku puzzle based on difficulty
 export function generateSudoku(difficulty: Difficulty) {
@@ -206,7 +207,7 @@ export function validateBoard(board: number[][]): boolean {
   return true;
 }
 
-async function rewardUser(userAddress: string, points: number) {
+export async function rewardUser(userAddress: string, points: number) {
   // Define conversion: e.g., 1 point = 0.01 SOL (customize as you wish)
   const solAmount = points * 0.01;
   try {

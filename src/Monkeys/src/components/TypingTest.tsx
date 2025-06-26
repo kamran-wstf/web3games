@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { generatePoints, getLatestNonce } from '../contract/contract';
 import { randomPoints } from '../helper/alphabets';
 import useGameStore from '../store/gameStore';
 import { LoadGame } from './loadgame';
@@ -27,8 +26,8 @@ const TypingTest: React.FC = () => {
   useEffect(() => {
     async function fetchNonce() {
       try {
-        const latestNonce = await getLatestNonce(chatId);
-        setNonce(latestNonce + 1);
+        // const latestNonce = await getLatestNonce(chatId);
+        // setNonce(latestNonce + 1);
       } catch (error) {
         console.error('Error fetching latest nonce:', error);
       }
@@ -53,7 +52,6 @@ const TypingTest: React.FC = () => {
     if (lastChar === nextChar && lastChar !== ' ') {
       const pointsValue = randomPoints(nextChar);
       setPoint((prev) => prev + pointsValue);
-      generatePoints(pointsValue, chatId, nonce);
       setNonce(nonce + 1);
 
       setPointAnimations((prev) => [...prev, { id: Date.now().toString(), value: pointsValue }]);

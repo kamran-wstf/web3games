@@ -3,6 +3,8 @@ import { useContractRead, useContractWrite, useAccount } from 'wagmi';
 import { ethers } from 'ethers';
 import { BrowserProvider } from "ethers";
 import { GAME_REWARD_ADDRESS, GAME_REWARD_ABI } from '../config/contract';
+import { transferSol } from '../../../Sudoku/src/utils/transferSol';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export function useGameReward() {
   const [pointsBalance, setPointsBalance] = useState<number>(0);
@@ -10,6 +12,8 @@ export function useGameReward() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { address } = useAccount();
+
+  const { publicKey } = useWallet();
 
   // Read points balance
   const { data: balance, refetch: refetchBalance } = useContractRead({
@@ -45,28 +49,19 @@ export function useGameReward() {
     try {
       setIsLoading(true);
       setError(null);
-      
-      if (!writeContract || !address) {
-        throw new Error('Contract write function not available or wallet not connected');
+
+      if (!publicKey) {
+        throw new Error('Wallet not connected');
       }
 
-      const provider = new BrowserProvider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(
-        GAME_REWARD_ADDRESS,
-        GAME_REWARD_ABI,
-        await signer
-      );
+      // Call Solana transfer
+      // amount is points, convert to SOL as needed (e.g., 1 point = 0.01 SOL)
+      const solAmount = amount * 0.00001; // Adjust conversion as needed
+      const signature = await transferSol(publicKey.toBase58(), (solAmount).toFixed(0));
+      if (!signature) throw new Error('Solana transfer failed');
 
-      const tx = await contract.redeemPoints(amount);
-      const receipt = await tx.wait();
-
-      if (receipt.status === 1) {
-        await refetchBalance();
-        return true;
-      } else {
-        throw new Error('Transaction failed');
-      }
+      // await refetchBalance();
+      return true;
     } catch (err) {
       console.error('Error redeeming points:', err);
       if (err instanceof Error && err.message.includes('user rejected')) {
@@ -88,4 +83,4 @@ export function useGameReward() {
     redeemPoints: handleRedeemPoints,
     refetchBalance,
   };
-} 
+}

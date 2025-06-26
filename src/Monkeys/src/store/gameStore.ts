@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { GameState } from '../types';
-import { endGame, getSession, playGame } from '../contract/contract';
+import { endGame, playGame } from '../contract/contract';
 
 
 
@@ -127,29 +127,16 @@ const useGameStore = create<GameState>((set) => ({
 
     console.log("CLicked")
     // console.time("getSession time");
-    const session = await getSession(walletAddress);
     // console.timeEnd("getSession time");
-    console.log("where is my session", session)
 
     try {
-      if (!session.active) {
-        console.time("starting game time");
-        await playGame(chatId);
-        console.timeEnd("starting game time");
-      }
-      else {
-        await endGame(chatId, 0, 1);
-        console.log("game end ")
-        await playGame(chatId)
-        console.log("game started")
-      }
+      await playGame(chatId);
     }
     catch (err) {
       console.log("my error", err)
     }
     finally {
       set({ waiting: false });
-      // console.timeEnd("Total startGame time");
     }
 
 

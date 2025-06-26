@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Bird, Cloud, Settings, ChevronRight, Trophy, Coins, Info } from 'lucide-react';
-import { Leaderboard } from './Leaderboard';
+// import { Leaderboard } from './Leaderboard';
 import { GameResult } from '../types';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 interface GameHistory {
   games: GameData[];
@@ -95,13 +96,12 @@ export function Game({ onGameOver }: GameProps) {
   const gameContainerRef = useRef<HTMLDivElement>(null);
   const hasEndedRef = useRef(false);
   const lastTimeRef = useRef(0);
+  const {publicKey} = useWallet()
   
   const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
   const [velocity, setVelocity] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
-  const [hasStartedMoving, setHasStartedMoving] = useState(false);
   const [totalGamesPlayed, setTotalGamesPlayed] = useState<number>(0);
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -164,8 +164,8 @@ export function Game({ onGameOver }: GameProps) {
     hasEndedRef.current = true;
 
     try {
-      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-      const currentAccount = accounts[0];
+      const accounts = publicKey?.toBase58();
+      const currentAccount = accounts;
       
       if (!currentAccount) {
         console.warn('No wallet connected');
@@ -625,7 +625,7 @@ export function Game({ onGameOver }: GameProps) {
         </button>
       </div>
       
-      {showLeaderboard && (
+      {/* {showLeaderboard && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
@@ -643,7 +643,7 @@ export function Game({ onGameOver }: GameProps) {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
