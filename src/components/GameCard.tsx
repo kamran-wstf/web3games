@@ -12,6 +12,7 @@ interface GameCardProps {
   link: string;
   isNew?: boolean;
   isTrending?: boolean;
+  comingSoon?: boolean;
 }
 
 const GameCard: React.FC<GameCardProps> = ({
@@ -23,7 +24,8 @@ const GameCard: React.FC<GameCardProps> = ({
   image,
   link,
   isNew,
-  isTrending
+  isTrending,
+  comingSoon
 }) => {
   const navigate = useNavigate();
 
@@ -31,7 +33,17 @@ const GameCard: React.FC<GameCardProps> = ({
     <div className="bg-slate-800/60 rounded-2xl overflow-hidden hover:bg-slate-800/80 transition-all duration-300 group hover:scale-105 border border-slate-700/50 hover:border-emerald-500/30">
       <div className="relative">
         <div className="aspect-video bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center border-b border-slate-700">
-          <div className="text-6xl opacity-30">🎮</div>
+          {image && (
+            <img src={image} alt={title} className="object-cover w-full h-full" />
+          )}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-6xl opacity-30">🎮</div>
+          </div>
+          {comingSoon && (
+            <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+              <span className="text-white text-2xl font-bold">Coming Soon</span>
+            </div>
+          )}
         </div>
 
         {/* Badges */}
@@ -49,11 +61,13 @@ const GameCard: React.FC<GameCardProps> = ({
         </div>
 
         {/* Play Button Overlay */}
-        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <button className="bg-emerald-500/20 backdrop-blur-sm text-emerald-400 border border-emerald-400/50 rounded-full p-4 hover:bg-emerald-500/30 transition-all transform hover:scale-110">
-            <Play className="w-8 h-8" />
-          </button>
-        </div>
+        {!comingSoon && (
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <button className="bg-emerald-500/20 backdrop-blur-sm text-emerald-400 border border-emerald-400/50 rounded-full p-4 hover:bg-emerald-500/30 transition-all transform hover:scale-110">
+              <Play className="w-8 h-8" />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="p-6">
@@ -80,10 +94,11 @@ const GameCard: React.FC<GameCardProps> = ({
         </div>
 
         <button
-          className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900 py-3 rounded-xl font-semibold hover:from-emerald-400 hover:to-cyan-400 transition-all"
-          onClick={() => navigate(link)}
+          className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900 py-3 rounded-xl font-semibold hover:from-emerald-400 hover:to-cyan-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={() => !comingSoon && navigate(link)}
+          disabled={!!comingSoon}
         >
-          Play Now
+          {comingSoon ? 'Coming Soon' : 'Play Now'}
         </button>
       </div>
     </div>

@@ -4,19 +4,19 @@ import GameCard from './GameCard';
 
 const games = [
   {
-    title: "CryptoRacer",
-    category: "Racing",
+    title: "Sudoku",
+    category: "Mind",
     players: 15420,
-    rating: 4.8,
+    rating: 4.2,
     earnings: "$50-200/day",
-    image: "/api/placeholder/400/225",
-    link:'/monkey',
+    image: "https://res.cloudinary.com/dovram6cb/image/upload/v1750949138/Screenshot_2025-06-22_141023_v55w4t.png",
+    link: '/sudoku',
     isNew: true,
     isTrending: true
   },
   {
-    title: "NFT Warriors",
-    category: "RPG",
+    title: "MOkeys",
+    category: "Typing Game",
     players: 32100,
     rating: 4.6,
     link: '/monkey',
@@ -100,17 +100,16 @@ const GameGrid = () => {
               />
             </div>
           </div>
-          
+
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-xl font-medium transition-all ${
-                  selectedCategory === category
-                    ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900'
-                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'
-                }`}
+                className={`px-6 py-3 rounded-xl font-medium transition-all ${selectedCategory === category
+                  ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'
+                  }`}
               >
                 {category}
               </button>
@@ -121,7 +120,13 @@ const GameGrid = () => {
         {/* Games Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredGames.map((game, index) => (
-            <GameCard key={index} {...game} />
+            <GameCard
+              key={index}
+              {...game}
+              image={index === 0 ? game.image : ""}
+              comingSoon={index !== 0}
+              link={index === 0 ? game.link : "#"}
+            />
           ))}
         </div>
 

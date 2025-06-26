@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Wallet, User, Menu } from 'lucide-react';
+import WalletConnectButton from './WalletConnectButton';
 
 const Header = () => {
   return (
@@ -26,17 +27,14 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             <div className="hidden sm:flex items-center space-x-2 bg-slate-800 rounded-lg px-3 py-2 border border-slate-700">
               <Search className="w-4 h-4 text-slate-400" />
-              <input 
-                type="text" 
-                placeholder="Search games..." 
+              <input
+                type="text"
+                placeholder="Search games..."
                 className="bg-transparent text-white placeholder-slate-400 border-none outline-none w-40"
               />
             </div>
-            
-            <button className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-900 px-4 py-2 rounded-lg flex items-center space-x-2 hover:from-emerald-400 hover:to-cyan-400 transition-all font-semibold">
-              <Wallet className="w-4 h-4" />
-              <span className="hidden sm:inline">Connect</span>
-            </button>
+
+            <WalletConnectButton />
 
             <button className="md:hidden text-slate-300 hover:text-white">
               <Menu className="w-6 h-6" />
