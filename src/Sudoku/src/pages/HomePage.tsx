@@ -7,20 +7,20 @@ import { PointsRedeem } from '../components/PointsRedeem';
 import { useGameStore } from '../stores/gameStore';
 import { useSettingsStore, Difficulty } from '../stores/settingsStore';
 import { useStatsStore } from '../stores/statsStore';
-import { useWalletStore } from '../stores/walletStore';
 import { usePointsStore } from '../stores/pointsStore';
 import { playSound, preloadSounds, playBackgroundMusic } from '../utils/audio';
 import { WalletConnect } from '../components/WalletConnect';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { initializeGame } = useGameStore();
   const { difficulty } = useSettingsStore();
   const { incrementGamesStarted, updateLastPlayed } = useStatsStore();
-  const { isConnected, connect, address } = useWalletStore();
+  const { publicKey, connected } = useWallet();
   const { getPoints, pointsPerDifficulty } = usePointsStore();
 
-  const userPoints = address ? getPoints(address) : 0;
+  const userPoints = publicKey ? getPoints(publicKey.toBase58()) : 0;
 
   useEffect(() => {
     // Preload sounds when the home page loads
@@ -33,9 +33,9 @@ const HomePage: React.FC = () => {
   const handlePlay = async () => {
     playSound('navigate');
 
-    if (!isConnected) {
+    if (!connected) {
       try {
-        await connect();
+        // Implement wallet connection logic here
       } catch (error) {
         alert('Please connect your wallet to play the game');
         return;
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
             <p className="text-ink-800 text-opacity-70">
               A serene Sudoku experience
             </p>
-            {isConnected && (
+            {connected && (
               <div className="mt-4 flex items-center justify-center gap-2 text-ink-800">
                 <Trophy size={20} className="text-yellow-500" />
                 <span className="font-medium">Your Points: {userPoints}</span>
@@ -102,13 +102,13 @@ const HomePage: React.FC = () => {
               className={`w-full py-3 text-white rounded-md shadow-md
                          focus:outline-none focus:ring-2 focus:ring-opacity-50 
                          flex items-center justify-center gap-2
-                         ${isConnected
+                         ${connected
                   ? 'bg-red-600 hover:bg-red-700 focus:ring-red-600'
                   : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-600'}`}
               onClick={handlePlay}
             >
               <Play size={20} />
-              {isConnected ? 'Play Now' : 'Connect Wallet to Play'}
+              {connected ? 'Play Now' : 'Connect Wallet to Play'}
             </button>
 
             <Link
@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {isConnected && (
+        {connected && (
           <div className="mt-8 w-full max-w-md">
             <PointsRedeem />
           </div>

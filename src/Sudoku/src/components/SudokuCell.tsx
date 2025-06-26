@@ -12,6 +12,7 @@ interface SudokuCellProps {
   isOriginal: boolean;
   isCorrect: boolean;
   onSelect: () => void;
+  isNumberHighlighted?: boolean;
 }
 
 const SudokuCell: React.FC<SudokuCellProps> = ({
@@ -24,7 +25,8 @@ const SudokuCell: React.FC<SudokuCellProps> = ({
   hasSameValue,
   isOriginal,
   isCorrect,
-  onSelect
+  onSelect,
+  isNumberHighlighted = false
 }) => {
   // Determine cell styling based on props
   const getCellClasses = () => {
@@ -32,14 +34,16 @@ const SudokuCell: React.FC<SudokuCellProps> = ({
 
     // Base styling
     classes += " bg-paper-100 text-ink-800";
-    
+
     // Border styling for 3x3 grid sections
     if (row % 3 === 2 && row < 8) classes += " border-b-2 border-ink-800";
     if (col % 3 === 2 && col < 8) classes += " border-r-2 border-ink-800";
-    
+
     // Highlighting for selected, related, and same value cells
     if (isSelected) {
       classes += " cell-selected";
+    } else if (isNumberHighlighted && value !== null) {
+      classes += " cell-number-highlight";
     } else if (hasSameValue && value !== null) {
       classes += " cell-same-value";
     } else if (isRelated) {
@@ -47,17 +51,17 @@ const SudokuCell: React.FC<SudokuCellProps> = ({
     } else {
       classes += " cell-hover";
     }
-    
+
     // Styling for original (pre-filled) cells
     if (isOriginal) {
       classes += " cell-fixed";
     }
-    
+
     // Error styling
     if (!isCorrect && !isOriginal) {
       classes += " cell-error";
     }
-    
+
     return classes;
   };
 
@@ -68,10 +72,10 @@ const SudokuCell: React.FC<SudokuCellProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={getCellClasses()}
       onClick={handleClick}
-      style={{ 
+      style={{
         aspectRatio: "1/1",
         fontSize: value ? '1.25rem' : '0.75rem'
       }}

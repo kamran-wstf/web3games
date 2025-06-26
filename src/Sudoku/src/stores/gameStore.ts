@@ -16,13 +16,14 @@ export interface GameState {
   notes: CellNotes[][];
   difficulty: Difficulty;
   selectedCell: [number, number] | null;
+  selectedNumber: number | null;
   status: GameStatus;
   startTime: number | null;
   elapsedTime: number;
   moves: number;
   errors: number;
   useNotes: boolean;
-  
+
   // Actions
   initializeGame: (difficulty: Difficulty) => void;
   selectCell: (row: number, col: number) => void;
@@ -36,6 +37,7 @@ export interface GameState {
   checkCompletion: () => boolean;
   resetGame: () => void;
   clearSelection: () => void;
+  setSelectedNumber: (num: number | null) => void;
 }
 
 export const useGameStore = create<GameState>()(
@@ -47,6 +49,7 @@ export const useGameStore = create<GameState>()(
       notes: Array(9).fill(null).map(() => Array(9).fill([])),
       difficulty: 'medium',
       selectedCell: null,
+      selectedNumber: null,
       status: 'idle',
       startTime: null,
       elapsedTime: 0,
@@ -56,7 +59,7 @@ export const useGameStore = create<GameState>()(
 
       initializeGame: (difficulty) => {
         const { puzzle, solution } = generateSudoku(difficulty);
-        
+
         set({
           board: JSON.parse(JSON.stringify(puzzle)),
           solution: solution,
@@ -64,6 +67,7 @@ export const useGameStore = create<GameState>()(
           notes: Array(9).fill(null).map(() => Array(9).fill([])),
           difficulty,
           selectedCell: null,
+          selectedNumber: null,
           status: 'playing',
           startTime: Date.now(),
           elapsedTime: 0,
@@ -74,7 +78,7 @@ export const useGameStore = create<GameState>()(
 
       selectCell: (row, col) => {
         const { board, originalBoard } = get();
-        
+
         // Only allow selecting cells that were not pre-filled
         if (originalBoard[row][col] === null) {
           set({ selectedCell: [row, col] });
@@ -83,11 +87,11 @@ export const useGameStore = create<GameState>()(
 
       setValueInCell: (value) => {
         const { selectedCell, board, originalBoard, solution, useNotes } = get();
-        
+
         if (!selectedCell) return;
-        
+
         const [row, col] = selectedCell;
-        
+
         // Don't allow modifying pre-filled cells
         if (originalBoard[row][col] !== null) return;
 
@@ -96,27 +100,27 @@ export const useGameStore = create<GameState>()(
           get().toggleNoteInCell(value as number);
           return;
         }
-        
+
         // Create a new board with the updated value
         const newBoard = JSON.parse(JSON.stringify(board));
         newBoard[row][col] = value;
-        
+
         // Check if the value is correct according to the solution
         const isCorrect = value === null || value === solution[row][col];
-        
+
         set(state => ({
           board: newBoard,
           moves: state.moves + 1,
           errors: isCorrect ? state.errors : state.errors + 1,
         }));
-        
+
         // Clear notes for this cell when a value is set
         if (value !== null) {
           const newNotes = JSON.parse(JSON.stringify(get().notes));
           newNotes[row][col] = [];
           set({ notes: newNotes });
         }
-        
+
         // Check if the game is completed
         if (get().checkCompletion()) {
           set({ status: 'completed' });
@@ -125,40 +129,40 @@ export const useGameStore = create<GameState>()(
 
       toggleNoteInCell: (value) => {
         const { selectedCell, notes, board } = get();
-        
+
         if (!selectedCell) return;
-        
+
         const [row, col] = selectedCell;
-        
+
         // Only toggle notes in empty cells
         if (board[row][col] !== null) return;
-        
+
         const newNotes = JSON.parse(JSON.stringify(notes));
-        
+
         // Toggle the note value (add if not present, remove if present)
         if (newNotes[row][col].includes(value)) {
           newNotes[row][col] = newNotes[row][col].filter((n: number) => n !== value);
         } else {
           newNotes[row][col] = [...newNotes[row][col], value].sort();
         }
-        
+
         set({ notes: newNotes });
       },
 
       eraseCell: () => {
         const { selectedCell, board, originalBoard } = get();
-        
+
         if (!selectedCell) return;
-        
+
         const [row, col] = selectedCell;
-        
+
         // Don't allow erasing pre-filled cells
         if (originalBoard[row][col] !== null) return;
-        
+
         // Create a new board with the cell erased
         const newBoard = JSON.parse(JSON.stringify(board));
         newBoard[row][col] = null;
-        
+
         set(state => ({
           board: newBoard,
           moves: state.moves + 1
@@ -189,7 +193,7 @@ export const useGameStore = create<GameState>()(
 
       updateTimer: () => {
         const { status, startTime } = get();
-        
+
         if (status === 'playing' && startTime) {
           set(state => ({
             elapsedTime: state.elapsedTime + (Date.now() - (state.startTime || Date.now())),
@@ -200,7 +204,7 @@ export const useGameStore = create<GameState>()(
 
       checkCompletion: () => {
         const { board, solution } = get();
-        
+
         // Check if all cells are filled correctly
         for (let row = 0; row < 9; row++) {
           for (let col = 0; col < 9; col++) {
@@ -209,16 +213,16 @@ export const useGameStore = create<GameState>()(
             }
           }
         }
-        
+
         // If we get here, the game is completed
         // Award points based on difficulty and wallet address
         const { addPoints } = usePointsStore.getState();
         const { address } = useWalletStore.getState();
-        
+
         if (address) {
           addPoints(address, get().difficulty);
         }
-        
+
         return true;
       },
 
@@ -227,6 +231,7 @@ export const useGameStore = create<GameState>()(
           board: JSON.parse(JSON.stringify(state.originalBoard)),
           notes: Array(9).fill(null).map(() => Array(9).fill([])),
           selectedCell: null,
+          selectedNumber: null,
           status: 'playing',
           startTime: Date.now(),
           elapsedTime: 0,
@@ -237,6 +242,11 @@ export const useGameStore = create<GameState>()(
 
       clearSelection: () => {
         set({ selectedCell: null });
+        set({ selectedNumber: null });
+      },
+
+      setSelectedNumber: (num) => {
+        set({ selectedNumber: num });
       }
     }),
     {

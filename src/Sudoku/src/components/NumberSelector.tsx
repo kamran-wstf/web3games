@@ -3,10 +3,11 @@ import { useGameStore } from '../stores/gameStore';
 import { playSound } from '../utils/audio';
 
 const NumberSelector: React.FC = () => {
-  const { setValueInCell, useNotes, toggleNoteInCell } = useGameStore();
+  const { setValueInCell, useNotes, toggleNoteInCell, selectedNumber, setSelectedNumber } = useGameStore();
 
   // Handle number button click
   const handleNumberClick = (number: number) => {
+    setSelectedNumber(number);
     if (useNotes) {
       playSound('toggle');
       toggleNoteInCell(number);
@@ -21,7 +22,7 @@ const NumberSelector: React.FC = () => {
       {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(number => (
         <button
           key={number}
-          className="number-btn"
+          className={`number-btn${selectedNumber === number ? ' bg-yellow-300 border-yellow-500' : ''}`}
           onClick={() => handleNumberClick(number)}
         >
           {number}

@@ -9,12 +9,11 @@ import OtherGame from './OtherGame';
 import MONkeys from './Monkeys/src/App';
 import Flappy from './Flappy/src/App';
 import Sudoku from './Sudoku/src/App';
-import { WagmiProvider } from 'wagmi';
-import { QueryClientProvider } from '@tanstack/react-query';
+
 
 function App() {
-  return (
 
+  return (
     <Router>
       <Routes>
         <Route path="/" element={

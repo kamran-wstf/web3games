@@ -64,4 +64,8 @@
   .animate-ink-wash {
     animation: ink-wash 0.5s ease-out forwards;
   }
+
+  .cell-number-highlight {
+    @apply bg-yellow-200 border-2 border-yellow-400;
+  }
 }
