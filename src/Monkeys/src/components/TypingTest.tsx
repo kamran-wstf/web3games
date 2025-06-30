@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { randomPoints } from '../helper/alphabets';
 import useGameStore from '../store/gameStore';
-import { LoadGame } from './loadgame';
 
 const TypingTest: React.FC = () => {
   const {
@@ -64,9 +63,7 @@ const TypingTest: React.FC = () => {
     setMyScore(Mypoint);
   };
 
-  if (countdown > 0) {
-    return <LoadGame />;
-  }
+
 
   return (
     <div className="w-full max-w-4xl mx-auto" onClick={() => inputRef.current?.focus()}>
@@ -84,30 +81,30 @@ const TypingTest: React.FC = () => {
         {/* Stats Section */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <div className="bg-[#1A1432] rounded-xl shadow-lg shadow-purple-900/20 px-6 py-3">
-              <p className="text-[#9D70FF] font-medium">time</p>
+            <div className="bg-gradient-to-br from-[#1a2e1a] to-[#2d4a2d] rounded-xl shadow-xl shadow-green-900/30 px-6 py-3 border border-green-700/30">
+              <p className="text-[#4ade80] font-medium">time</p>
               <p className="text-2xl font-bold text-white">{timeLeft}s</p>
             </div>
-            <div className="bg-[#1A1432] rounded-xl shadow-lg shadow-purple-900/20 px-6 py-3">
-              <p className="text-[#9D70FF] font-medium">wpm</p>
-              <p className="text-2xl font-bold gradient-text">{wpm}</p>
+            <div className="bg-gradient-to-br from-[#1a2e1a] to-[#2d4a2d] rounded-xl shadow-xl shadow-green-900/30 px-6 py-3 border border-green-700/30">
+              <p className="text-[#4ade80] font-medium">wpm</p>
+              <p className="text-2xl font-bold bg-gradient-to-r from-[#00ff88] to-[#4ade80] bg-clip-text text-transparent">{wpm}</p>
             </div>
-            <div className="bg-[#1A1432] rounded-xl shadow-lg shadow-purple-900/20 px-6 py-3">
-              <p className="text-[#9D70FF] font-medium">acc</p>
+            <div className="bg-gradient-to-br from-[#1a2e1a] to-[#2d4a2d] rounded-xl shadow-xl shadow-green-900/30 px-6 py-3 border border-green-700/30">
+              <p className="text-[#4ade80] font-medium">acc</p>
               <p className="text-2xl font-bold text-white">{accuracy}%</p>
             </div>
           </div>
         </div>
 
         {/* Typing Text Display */}
-        <div className="bg-[#1A1432] rounded-2xl shadow-lg shadow-purple-900/20 p-8">
+        <div className="bg-gradient-to-br from-[#1a2e1a] to-[#2d4a2d] rounded-2xl shadow-2xl shadow-green-900/30 p-8 border border-green-800/30 backdrop-blur-sm">
           <div className="text-2xl leading-relaxed font-mono tracking-wide" style={{ minHeight: '200px' }}>
             {currentText.split('').map((char, index) => {
-              let className = 'text-gray-500';
+              let className = 'text-gray-400';
               if (index < userInput.length) {
-                className = userInput[index] === char ? 'text-[#9D70FF]' : 'text-red-500';
+                className = userInput[index] === char ? 'text-[#00ff88] font-semibold' : 'text-red-400 bg-red-900/20 rounded px-0.5';
               } else if (index === userInput.length) {
-                className = 'bg-[#2A1F45] text-white rounded px-1';
+                className = 'bg-gradient-to-r from-[#00ff88] to-[#4ade80] text-black rounded px-1 font-bold animate-pulse';
               }
               return <span key={index} className={className}>{char}</span>;
             })}
@@ -117,7 +114,7 @@ const TypingTest: React.FC = () => {
           {pointAnimations.map((anim) => (
             <div
               key={anim.id}
-              className="point-animation absolute text-green-500 font-bold"
+              className="point-animation absolute text-[#00ff88] font-bold text-xl drop-shadow-lg animate-bounce"
               style={{ transform: 'translateX(-50%) translateY(-40%)' }}
             >
               +{anim.value}
