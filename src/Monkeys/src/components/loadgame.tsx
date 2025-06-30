@@ -1,75 +1,114 @@
-import { useEffect, useState } from "react";
-import { Gamepad2, Zap, Target, Sparkles } from "lucide-react";
+import { Trophy, Clock, Zap } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import GameResults from './GameResults';
+import Leaderboard from './Leaderboard';
+import useGameStore from '../store/gameStore';
 
-export function LoadGame() {
+interface WaitingPageProps {
+    score?: number;
+    wpm?: number;
+}
+
+export function WaitingPage({ }: WaitingPageProps) {
+
+    const [reloadLeaderboard, setReloadLeaderboard] = useState(false);
+
     const messages = [
-        "Fetching Balances from Molandak..",
-        "Paying Chog for KEYS...",
-        "Pulling out a contract for Keone..",
-        "Sending Contract to Keone through Mouch..",
-        "Waiting for Apprroval from JohnWRich Kid.."
+        "Calculating your results...",
+        "Analyzing your performance...",
+        "Crunching the numbers...",
+        "Almost there...",
+        "Preparing your stats..."
     ];
 
-    const [message, setMessage] = useState(messages[0]);
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    const [progress, setProgress] = useState(0);
+    const [showResults, setShowResults] = useState(false);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            const randomIndex = Math.floor(Math.random() * messages.length);
-            setMessage(messages[randomIndex]);
-        }, 2000); // Change every 2 seconds
+        const messageInterval = setInterval(() => {
+            setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
+        }, 1000);
 
-        return () => clearInterval(interval);
+        const startTime = Date.now();
+        const duration = 3000;
+
+        const progressInterval = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const newProgress = Math.min(100, (elapsed / duration) * 100);
+
+            setProgress(newProgress);
+
+            if (newProgress >= 100) {
+                clearInterval(progressInterval);
+                setTimeout(() => {
+                    setShowResults(true);
+                }, 500);
+            }
+        }, 50);
+
+        return () => {
+            clearInterval(messageInterval);
+            clearInterval(progressInterval);
+        };
     }, []);
 
+    if (showResults) {
+        return (
+            <div className="flex flex-col md:flex-row gap-6 items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <GameResults onClaim={() => setReloadLeaderboard(true)} />
+            </div>
+        );
+    }
+
     return (
-        <div className="min-h-full text-white flex items-center justify-center p-4">
-            <div className="bg-[#1F1B2E] rounded-3xl p-8 md:p-12 max-w-3xl w-full shadow-2xl backdrop-blur-sm bg-opacity-90">
-                <div className="flex items-center justify-center gap-4 mb-12 animate-[pulse-glow_3s_ease-in-out_infinite]">
-                    <Gamepad2 className="w-12 h-12 text-[#8B5CF6]" />
-                    <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] bg-clip-text text-transparent">
-                        Monad keys
-                    </h1>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                    <div className="flex flex-col items-center text-center">
-                        <div className="feature-icon bg-[#2D2640] p-4 rounded-2xl mb-4">
-                            <Zap className="w-8 h-8 text-[#8B5CF6]" />
-                        </div>
-                        <h2 className="text-xl font-semibold text-[#8B5CF6]">Fast-Paced</h2>
-                    </div>
-
-                    <div className="flex flex-col items-center text-center">
-                        <div className="feature-icon bg-[#2D2640] p-4 rounded-2xl mb-4">
-                            <Target className="w-8 h-8 text-[#8B5CF6]" />
-                        </div>
-                        <h2 className="text-xl font-semibold text-[#8B5CF6]">Test Your Speed</h2>
-                    </div>
-
-                    <div className="flex flex-col items-center text-center">
-                        <div className="feature-icon bg-[#2D2640] p-4 rounded-2xl mb-4">
-                            <Sparkles className="w-8 h-8 text-[#8B5CF6]" />
-                        </div>
-                        <h2 className="text-xl font-semibold text-[#8B5CF6]">Earn Points</h2>
+        <div className="min-h-full lg:w-full m-4 p-10 flex items-center justify-center text-white">
+            <div className="text-center space-y-8 max-w-md">
+                <div className="relative mx-auto w-24 h-24 flex items-center justify-center">
+                    <div className="absolute inset-0 animate-ping bg-[#8B5CF6] rounded-full opacity-20" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#8B5CF6]/30 to-[#EC4899]/30 rounded-full animate-pulse" />
+                    <div className="relative bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] p-6 rounded-full inline-block shadow-xl shadow-purple-500/50">
+                        <Trophy className="w-12 h-12 text-black" />
                     </div>
                 </div>
 
-                <div className="text-center space-y-4">
-                    <p className="text-2xl text-[#8B5CF6] loading-dots">
-                        {message}
-                    </p>
-                    <div className="flex justify-center items-center gap-2 mt-4">
-                        <div className="dot"></div>
-                        <div className="dot"></div>
-                        <div className="dot"></div>
-                    </div>
-                    <p className="text-gray-400">
-                        Get ready to test your clicking speed!
+                <div className="space-y-4">
+                    <h2 className="text-4xl font-bold bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] bg-clip-text text-transparent">
+                        Calculating Results
+                    </h2>
+                    <p className="text-gray-200 text-lg min-h-[3.5rem] transition-all duration-500">
+                        {messages[currentMessageIndex]}
                     </p>
                 </div>
 
-                <div className="mt-12 text-center text-sm text-gray-500">
-                    © 2025 SideBot. All rights reserved.
+                <div className="mt-8 space-y-6">
+                    <div className="w-full bg-gradient-to-r from-[#2B1D3F] to-[#3A2A4F] rounded-full h-4 overflow-hidden backdrop-blur-sm shadow-xl border border-purple-700/30">
+                        <div
+                            className="bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] h-full rounded-full transition-all duration-300 ease-out shadow-lg shadow-pink-500/40"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+
+                    <div className="flex justify-between text-gray-200 px-1">
+                        <div className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            <span>Processing</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <span>{Math.round(progress)}%</span>
+                            <Zap className="w-4 h-4 text-[#EC4899]" />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex justify-center gap-2 mt-8">
+                    {[0, 1, 2].map((i) => (
+                        <div
+                            key={i}
+                            className="w-3 h-3 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] rounded-full animate-bounce shadow-lg shadow-pink-500/40"
+                            style={{ animationDelay: `${i * 150}ms` }}
+                        />
+                    ))}
                 </div>
             </div>
         </div>

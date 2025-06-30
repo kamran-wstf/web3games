@@ -68,39 +68,39 @@ export function WaitingPage({ }: WaitingPageProps) {
         <div className="min-h-full lg:w-full m-4 p-10 flex items-center justify-center">
             <div className="text-center space-y-8 max-w-md">
                 <div className="relative mx-auto w-24 h-24 flex items-center justify-center">
-                    <div className="absolute inset-0 animate-ping bg-purple-500 rounded-full opacity-20" />
-                    <div className="absolute inset-0 bg-purple-700/30 rounded-full animate-pulse" />
-                    <div className="relative bg-purple-600 p-6 rounded-full inline-block shadow-lg">
-                        <Trophy className="w-12 h-12 text-white" />
+                    <div className="absolute inset-0 animate-ping bg-[#00ff88] rounded-full opacity-20" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#00ff88]/30 to-[#4ade80]/30 rounded-full animate-pulse" />
+                    <div className="relative bg-gradient-to-r from-[#00ff88] to-[#4ade80] p-6 rounded-full inline-block shadow-xl shadow-green-500/50">
+                        <Trophy className="w-12 h-12 text-black" />
                     </div>
                 </div>
 
                 <div className="space-y-4">
-                    <h2 className="text-4xl font-bold text-white">
+                    <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00ff88] to-[#4ade80] bg-clip-text text-transparent">
                         Calculating Results
                     </h2>
-                    <p className="text-purple-200 text-lg min-h-[3.5rem] transition-all duration-500">
+                    <p className="text-gray-200 text-lg min-h-[3.5rem] transition-all duration-500">
                         {messages[currentMessageIndex]}
                     </p>
                 </div>
 
                 {/* Progress bar instead of score/wpm */}
                 <div className="mt-8 space-y-6">
-                    <div className="w-full bg-purple-800/50 rounded-full h-4 overflow-hidden backdrop-blur-sm shadow-xl">
+                    <div className="w-full bg-gradient-to-r from-[#1a2e1a] to-[#2d4a2d] rounded-full h-4 overflow-hidden backdrop-blur-sm shadow-xl border border-green-700/30">
                         <div
-                            className="bg-gradient-to-r from-purple-400 to-purple-500 h-full rounded-full transition-all duration-300 ease-out"
+                            className="bg-gradient-to-r from-[#00ff88] to-[#4ade80] h-full rounded-full transition-all duration-300 ease-out shadow-lg shadow-green-500/50"
                             style={{ width: `${progress}%` }}
                         />
                     </div>
 
-                    <div className="flex justify-between text-purple-300 px-1">
+                    <div className="flex justify-between text-gray-200 px-1">
                         <div className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
                             <span>Processing</span>
                         </div>
                         <div className="flex items-center gap-1">
                             <span>{Math.round(progress)}%</span>
-                            <Zap className="w-4 h-4" />
+                            <Zap className="w-4 h-4 text-[#4ade80]" />
                         </div>
                     </div>
                 </div>
@@ -109,7 +109,7 @@ export function WaitingPage({ }: WaitingPageProps) {
                     {[0, 1, 2].map((i) => (
                         <div
                             key={i}
-                            className="w-3 h-3 bg-purple-500 rounded-full animate-bounce"
+                            className="w-3 h-3 bg-gradient-to-r from-[#00ff88] to-[#4ade80] rounded-full animate-bounce shadow-lg shadow-green-500/50"
                             style={{ animationDelay: `${i * 150}ms` }}
                         />
                     ))}

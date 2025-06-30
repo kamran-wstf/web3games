@@ -8,7 +8,7 @@ const Confetti = dynamic(() => import('react-confetti'), { ssr: false });
 
 const Spinner = () => (
   <svg
-    className="animate-spin h-6 w-6 text-white"
+    className="animate-spin h-6 w-6 text-black"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -17,6 +17,7 @@ const Spinner = () => (
     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
   </svg>
 );
+
 interface GameResultsProps {
   onClaim: () => void;
 }
@@ -96,27 +97,27 @@ const GameResults: React.FC<GameResultsProps> = ({ onClaim }) => {
     <div className="flex-1 w-full">
       {showParty && <Confetti width={windowSize.width} height={windowSize.height} />}
 
-      <div className="bg-[#1A1432] rounded-2xl shadow-lg shadow-purple-900/20 p-4 sm:p-6 md:p-8 w-full max-w-2xl mx-auto">
-        <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-center text-white mb-4 sm:mb-6">
+      <div className="bg-gradient-to-br from-[#1a2e1a] to-[#2d4a2d] rounded-2xl shadow-2xl shadow-green-900/30 p-4 sm:p-6 md:p-8 w-full max-w-2xl mx-auto border border-green-800/30 backdrop-blur-sm">
+        <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-center text-white mb-4 sm:mb-6 bg-gradient-to-r from-[#00ff88] to-[#4ade80] bg-clip-text text-transparent">
           Test Complete!
         </h2>
 
         {/* Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
-            { icon: <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-[#9D70FF]" />, label: "Words per Minute", value: `${wpm} WPM` },
-            { icon: <Banknote className="w-5 h-5 sm:w-6 sm:h-6 text-[#9D70FF]" />, label: "Transactions per 30sec", value: `${correctChar} Transactions` },
-            { icon: <Target className="w-5 h-5 sm:w-6 sm:h-6 text-[#9D70FF]" />, label: "Accuracy", value: `${accuracy}%` },
-            { icon: <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-[#9D70FF]" />, label: "Score", value: MyScore },
-            { icon: <Coins className="w-5 h-5 sm:w-6 sm:h-6 text-[#9D70FF]" />, label: "Currency Earned", value: earned },
+            { icon: <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-[#4ade80]" />, label: "Words per Minute", value: `${wpm} WPM` },
+            { icon: <Banknote className="w-5 h-5 sm:w-6 sm:h-6 text-[#4ade80]" />, label: "Transactions per 30sec", value: `${correctChar} Transactions` },
+            { icon: <Target className="w-5 h-5 sm:w-6 sm:h-6 text-[#4ade80]" />, label: "Accuracy", value: `${accuracy}%` },
+            { icon: <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-[#4ade80]" />, label: "Score", value: MyScore },
+            { icon: <Coins className="w-5 h-5 sm:w-6 sm:h-6 text-[#4ade80]" />, label: "Currency Earned", value: earned },
             {
-              icon: <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-[#9D70FF]" />,
+              icon: <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-[#4ade80]" />,
               label: (
                 <a
                   href={`https://testnet.monadexplorer.com/address/${walletAddress}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 text-xs sm:text-sm hover:text-white transition"
+                  className="text-gray-300 text-xs sm:text-sm hover:text-[#00ff88] transition"
                 >
                   View on Monad Explorer
                 </a>
@@ -124,10 +125,10 @@ const GameResults: React.FC<GameResultsProps> = ({ onClaim }) => {
               value: "",
             },
           ].map((item, index) => (
-            <div key={index} className="flex items-center gap-3 p-3 sm:p-4 bg-[#2A1F45] rounded-xl">
+            <div key={index} className="flex items-center gap-3 p-3 sm:p-4 bg-gradient-to-br from-[#0f1f0f] to-[#1a2e1a] rounded-xl border border-green-700/20 shadow-lg shadow-green-900/20">
               {item.icon}
               <div>
-                <p className="text-gray-400 text-xs sm:text-sm">{item.label}</p>
+                <p className="text-gray-300 text-xs sm:text-sm">{item.label}</p>
                 {item.value && <p className="text-sm sm:text-lg font-bold text-white">{item.value}</p>}
               </div>
             </div>
@@ -144,7 +145,7 @@ const GameResults: React.FC<GameResultsProps> = ({ onClaim }) => {
             }
           }}
           disabled={isLoading}
-          className="w-full mt-5 sm:mt-6 flex items-center justify-center gap-2 bg-gradient-to-r from-[#6C3BEE] to-[#9D70FF] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-900/30 disabled:opacity-50"
+          className="w-full mt-5 sm:mt-6 flex items-center justify-center gap-2 bg-gradient-to-r from-[#00ff88] via-[#4ade80] to-[#22c55e] text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-green-500/50 disabled:opacity-50 border-2 border-green-400/50 hover:border-green-300"
         >
           {isLoading ? (
             <>
